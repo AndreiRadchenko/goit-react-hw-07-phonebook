@@ -6,11 +6,6 @@ const initialValues = {
   number: '',
 };
 
-// const handleSubmit = (values, { resetForm }) => {
-//   console.log(values);
-//   resetForm();
-// };
-
 const ContactForm = ({ handleSubmit }) => {
   return (
     <Formik initialValues={initialValues} onSubmit={handleSubmit}>

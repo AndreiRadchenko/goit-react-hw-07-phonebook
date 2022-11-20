@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { Form, Field } from 'formik';
 
 const ContactForm = styled(Form)`
+  margin: 0;
   color: gray;
   display: flex;
   flex-direction: column;
