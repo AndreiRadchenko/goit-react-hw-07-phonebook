@@ -4,6 +4,7 @@ import ContactList from 'components/ContactList';
 import shortid from 'shortid';
 import ContactFilter from 'components/ContactFilter';
 import Box from './Box';
+import { Notify } from 'notiflix';
 
 class App extends Component {
   state = {
@@ -18,7 +19,7 @@ class App extends Component {
 
   handleFormSubmit = ({ name, number }, { resetForm }) => {
     if (this.state.contacts.find(e => e.name === name)) {
-      alert(`${name} is already in contacts`);
+      Notify.warning(`${name} is already in contacts`);
       return;
     }
     const id = shortid.generate();

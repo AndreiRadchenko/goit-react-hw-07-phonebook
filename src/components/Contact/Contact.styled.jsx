@@ -1,20 +1,20 @@
 import styled from 'styled-components';
 
-const Item = styled.li`
+export const Item = styled.li`
   color: gray;
   display: flex;
   justify-content: space-between;
   width: 360px;
 `;
 
-const Text = styled.p`
+export const Text = styled.p`
   margin: 0;
   padding: 0;
 `;
 
-const css = {
-  Item,
-  Text,
-};
+// const css = {
+//   Item,
+//   Text,
+// };
 
-export default css;
+// export default css;

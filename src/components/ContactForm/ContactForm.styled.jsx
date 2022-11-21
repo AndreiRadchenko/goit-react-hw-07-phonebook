@@ -17,25 +17,40 @@ const ContactForm = styled(Form)`
 const Label = styled.label`
   display: flex;
   justify-content: space-between;
-  align-items: center;
   width: 300px;
 `;
 
-const Input = styled(Field)`
+const InputWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  height: 47.8px;
   width: 220px;
+`;
+
+const Input = styled(Field)`
   height: 22px;
+`;
+
+const ErrorText = styled.p`
+  color: tomato;
+  font-size: 12px;
+  margin-top: 6px;
 `;
 
 const Button = styled.button`
   width: 180px;
   padding: 6px;
-  margin-top: 30px;
+  margin-top: 20px;
+  margin-left: 80px;
 `;
 
 const css = {
   ContactForm,
   Label,
+  ErrorText,
   Input,
+  InputWrap,
   Button,
 };
 
