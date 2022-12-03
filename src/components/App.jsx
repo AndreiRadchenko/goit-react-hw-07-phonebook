@@ -46,7 +46,7 @@ class App extends Component {
   };
 
   componentDidMount() {
-    console.log('componentDidMount');
+    // console.log('componentDidMount');
     const savedContacts = localStor.load(LS_KEY);
     if (savedContacts) {
       this.setState({ contacts: savedContacts });
@@ -54,7 +54,7 @@ class App extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log('componentDidUpdate');
+    // console.log('componentDidUpdate');
     if (prevState.contacts !== this.state.contacts) {
       localStor.save(LS_KEY, this.state.contacts);
     }
@@ -62,8 +62,8 @@ class App extends Component {
 
   // componentWillUnmount() {
   //   console.log('componentWillUnmount');
-  //   localStor.save(LS_KEY, this.state.contacts);
-  // };
+  //   // localStor.save(LS_KEY, this.state.contacts);
+  // }
 
   render() {
     return (
