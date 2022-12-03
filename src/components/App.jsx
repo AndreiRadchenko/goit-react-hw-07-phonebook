@@ -5,6 +5,9 @@ import shortid from 'shortid';
 import ContactFilter from 'components/ContactFilter';
 import Box from './Box';
 import { Notify } from 'notiflix';
+import localStor from 'utils/storage';
+
+const LS_KEY = 'contacts_list';
 
 class App extends Component {
   state = {
@@ -41,6 +44,26 @@ class App extends Component {
       filter: filterStr,
     });
   };
+
+  componentDidMount() {
+    console.log('componentDidMount');
+    const savedContacts = localStor.load(LS_KEY);
+    if (savedContacts) {
+      this.setState({ contacts: savedContacts });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    console.log('componentDidUpdate');
+    if (prevState.contacts !== this.state.contacts) {
+      localStor.save(LS_KEY, this.state.contacts);
+    }
+  }
+
+  // componentWillUnmount() {
+  //   console.log('componentWillUnmount');
+  //   localStor.save(LS_KEY, this.state.contacts);
+  // };
 
   render() {
     return (
