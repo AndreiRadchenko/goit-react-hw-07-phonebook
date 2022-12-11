@@ -2,7 +2,7 @@ import Contact from 'components/Contact';
 import css from './ContactList.styled';
 import PropTypes from 'prop-types';
 
-const ContactList = ({ state: { contacts, filter }, handleContactDelete }) => {
+const ContactList = ({ contacts, filter, handleContactDelete }) => {
   const contactsForRender = !filter
     ? contacts
     : contacts.filter(e => e.name.toLowerCase().includes(filter.toLowerCase()));

@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useState, useEffect } from 'react';
 import ContactForm from 'components/ContactForm';
 import ContactList from 'components/ContactList';
 import shortid from 'shortid';
@@ -8,82 +8,71 @@ import { Notify } from 'notiflix';
 import localStor from 'utils/storage';
 
 const LS_KEY = 'contacts_list';
+const initContact = [
+  { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
+  { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
+  { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
+  { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
+];
 
-class App extends Component {
-  state = {
-    contacts: [
-      { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-      { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-      { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-      { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-    ],
-    filter: '',
-  };
+const App = () => {
+  const [contacts, setContacts] = useState(() => {
+    const savedContacts = localStor.load(LS_KEY);
+    if (savedContacts) {
+      return [...savedContacts];
+    } else {
+      return [...initContact];
+    }
+  });
+  const [filter, setFilter] = useState('');
 
-  handleFormSubmit = ({ name, number }, { resetForm }) => {
-    if (this.state.contacts.find(e => e.name === name)) {
+  const handleFormSubmit = ({ name, number }, { resetForm }) => {
+    if (contacts.find(e => e.name === name)) {
       Notify.warning(`${name} is already in contacts`);
       return;
     }
     const id = shortid.generate();
-    this.setState(({ contacts }) => ({
-      contacts: [...contacts, { id, name, number }],
-    }));
+    setContacts(prevContacts => {
+      return [...prevContacts, { id, name, number }];
+    });
     resetForm();
   };
 
-  handleContactDelete = id => {
-    this.setState(({ contacts: prevContacts }) => ({
-      contacts: prevContacts.filter(e => e.id !== id),
-    }));
-  };
-
-  handleFilterInput = event => {
-    const filterStr = event.target.value;
-    this.setState({
-      filter: filterStr,
+  const handleContactDelete = id => {
+    setContacts(prevContacts => {
+      return [...prevContacts.filter(e => e.id !== id)];
     });
   };
 
-  componentDidMount() {
-    // console.log('componentDidMount');
-    const savedContacts = localStor.load(LS_KEY);
-    if (savedContacts) {
-      this.setState({ contacts: savedContacts });
-    }
-  }
+  const handleFilterInput = event => {
+    const filterStr = event.target.value;
+    setFilter(filterStr);
+  };
 
-  componentDidUpdate(prevProps, prevState) {
-    // console.log('componentDidUpdate');
-    if (prevState.contacts !== this.state.contacts) {
-      localStor.save(LS_KEY, this.state.contacts);
-    }
-  }
+  useEffect(() => {
+    console.log('componentDidUpdate');
+    console.log(contacts);
+    localStor.save(LS_KEY, contacts);
+  }, [contacts]);
 
-  // componentWillUnmount() {
-  //   console.log('componentWillUnmount');
-  //   // localStor.save(LS_KEY, this.state.contacts);
-  // }
+  return (
+    <>
+      <Box margin="30px auto" width="390px" as="section">
+        <h1>Phonebook</h1>
+        <ContactForm handleSubmit={handleFormSubmit} />
+      </Box>
 
-  render() {
-    return (
-      <>
-        <Box margin="30px auto" width="390px" as="section">
-          <h1>Phonebook</h1>
-          <ContactForm handleSubmit={this.handleFormSubmit} />
-        </Box>
-
-        <Box margin="0 auto" width="390px" as="section">
-          <h2>Contacts</h2>
-          <ContactFilter handleFilterInput={this.handleFilterInput} />
-          <ContactList
-            state={this.state}
-            handleContactDelete={this.handleContactDelete}
-          />
-        </Box>
-      </>
-    );
-  }
-}
+      <Box margin="0 auto" width="390px" as="section">
+        <h2>Contacts</h2>
+        <ContactFilter handleFilterInput={handleFilterInput} />
+        <ContactList
+          contacts={contacts}
+          filter={filter}
+          handleContactDelete={handleContactDelete}
+        />
+      </Box>
+    </>
+  );
+};
 
 export default App;
