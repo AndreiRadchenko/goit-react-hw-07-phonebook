@@ -50,8 +50,6 @@ const App = () => {
   };
 
   useEffect(() => {
-    console.log('componentDidUpdate');
-    console.log(contacts);
     localStor.save(LS_KEY, contacts);
   }, [contacts]);
 
