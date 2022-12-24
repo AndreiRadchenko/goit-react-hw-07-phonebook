@@ -6,6 +6,8 @@ import ContactFilter from 'components/ContactFilter';
 import Box from './Box';
 import { Notify } from 'notiflix';
 import localStor from 'utils/storage';
+// import { useDispatch } from 'react-redux';
+// import { setFilter } from '../redux/actions';
 
 const LS_KEY = 'contacts_list';
 const initContact = [
@@ -16,6 +18,8 @@ const initContact = [
 ];
 
 const App = () => {
+  // const dispatch = useDispatch();
+
   const [contacts, setContacts] = useState(() => {
     const savedContacts = localStor.load(LS_KEY);
     if (savedContacts) {
@@ -24,7 +28,7 @@ const App = () => {
       return [...initContact];
     }
   });
-  const [filter, setFilter] = useState('');
+  // const [filter, setFilter] = useState('');
 
   const handleFormSubmit = ({ name, number }, { resetForm }) => {
     if (contacts.find(e => e.name === name)) {
@@ -44,10 +48,11 @@ const App = () => {
     });
   };
 
-  const handleFilterInput = event => {
-    const filterStr = event.target.value;
-    setFilter(filterStr);
-  };
+  // const handleFilterInput = event => {
+  //   const filterStr = event.target.value;
+  //   dispatch(setFilter(filterStr));
+  //   // setFilter(filterStr);
+  // };
 
   useEffect(() => {
     localStor.save(LS_KEY, contacts);
@@ -62,12 +67,8 @@ const App = () => {
 
       <Box margin="0 auto" width="390px" as="section">
         <h2>Contacts</h2>
-        <ContactFilter handleFilterInput={handleFilterInput} />
-        <ContactList
-          contacts={contacts}
-          filter={filter}
-          handleContactDelete={handleContactDelete}
-        />
+        <ContactFilter />
+        <ContactList handleContactDelete={handleContactDelete} />
       </Box>
     </>
   );

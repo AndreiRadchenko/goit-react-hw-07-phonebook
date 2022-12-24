@@ -1,17 +1,21 @@
 import css from './ContactFilter.styled';
-import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import { setFilter } from '../../redux/actions';
 
-const ContactFilter = ({ handleFilterInput }) => {
+const ContactFilter = () => {
+  const dispatch = useDispatch();
+
+  const handleFilterInput = event => {
+    const filterStr = event.target.value;
+    dispatch(setFilter(filterStr));
+  };
+
   return (
     <css.Filter>
       <p>Find contacts by name</p>
       <input type="text" onChange={handleFilterInput}></input>
     </css.Filter>
   );
-};
-
-ContactFilter.propTypes = {
-  handleFilterInput: PropTypes.func.isRequired,
 };
 
 export default ContactFilter;
