@@ -18,8 +18,6 @@ const initContact = [
 ];
 
 const App = () => {
-  // const dispatch = useDispatch();
-
   const [contacts, setContacts] = useState(() => {
     const savedContacts = localStor.load(LS_KEY);
     if (savedContacts) {
@@ -28,7 +26,6 @@ const App = () => {
       return [...initContact];
     }
   });
-  // const [filter, setFilter] = useState('');
 
   const handleFormSubmit = ({ name, number }, { resetForm }) => {
     if (contacts.find(e => e.name === name)) {
@@ -47,12 +44,6 @@ const App = () => {
       return [...prevContacts.filter(e => e.id !== id)];
     });
   };
-
-  // const handleFilterInput = event => {
-  //   const filterStr = event.target.value;
-  //   dispatch(setFilter(filterStr));
-  //   // setFilter(filterStr);
-  // };
 
   useEffect(() => {
     localStor.save(LS_KEY, contacts);
