@@ -1,35 +1,20 @@
-import { useEffect } from 'react';
+// import { useEffect } from 'react';
 import ContactForm from 'components/ContactForm';
 import ContactList from 'components/ContactList';
 import ContactFilter from 'components/ContactFilter';
 import Box from './Box';
-import localStor from 'utils/storage';
-import { useSelector } from 'react-redux';
-import { getContacts } from 'redux/selectors';
-// import { deleteContact } from 'redux/contactsSlice';
+// import localStor from 'utils/storage';
+// import { useSelector } from 'react-redux';
+// import { getContacts } from 'redux/selectors';
 
-const LS_KEY = 'contacts_list';
+// const LS_KEY = 'contacts_list';
 
 const App = () => {
-  const contacts = useSelector(getContacts);
-  // const dispatch = useDispatch();
+  // const contacts = useSelector(getContacts);
 
-  // const handleFormSubmit = ({ name, number }, { resetForm }) => {
-  //   if (contacts.find(e => e.name === name)) {
-  //     Notify.warning(`${name} is already in contacts`);
-  //     return;
-  //   }
-  //   dispatch(addContact({ name, number }));
-  //   resetForm();
-  // };
-
-  // const handleContactDelete = id => {
-  //   dispatch(deleteContact(id));
-  // };
-
-  useEffect(() => {
-    localStor.save(LS_KEY, contacts);
-  }, [contacts]);
+  // useEffect(() => {
+  //   localStor.save(LS_KEY, contacts);
+  // }, [contacts]);
 
   return (
     <>
