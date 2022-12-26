@@ -1,49 +1,31 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import ContactForm from 'components/ContactForm';
 import ContactList from 'components/ContactList';
-import shortid from 'shortid';
 import ContactFilter from 'components/ContactFilter';
 import Box from './Box';
-import { Notify } from 'notiflix';
 import localStor from 'utils/storage';
-// import { useDispatch } from 'react-redux';
-// import { setFilter } from '../redux/actions';
+import { useSelector } from 'react-redux';
+import { getContacts } from 'redux/selectors';
+// import { deleteContact } from 'redux/contactsSlice';
 
 const LS_KEY = 'contacts_list';
-const initContact = [
-  { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-  { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-  { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-  { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-];
 
 const App = () => {
-  const [contacts, setContacts] = useState(() => {
-    const savedContacts = localStor.load(LS_KEY);
-    if (savedContacts) {
-      return [...savedContacts];
-    } else {
-      return [...initContact];
-    }
-  });
+  const contacts = useSelector(getContacts);
+  // const dispatch = useDispatch();
 
-  const handleFormSubmit = ({ name, number }, { resetForm }) => {
-    if (contacts.find(e => e.name === name)) {
-      Notify.warning(`${name} is already in contacts`);
-      return;
-    }
-    const id = shortid.generate();
-    setContacts(prevContacts => {
-      return [...prevContacts, { id, name, number }];
-    });
-    resetForm();
-  };
+  // const handleFormSubmit = ({ name, number }, { resetForm }) => {
+  //   if (contacts.find(e => e.name === name)) {
+  //     Notify.warning(`${name} is already in contacts`);
+  //     return;
+  //   }
+  //   dispatch(addContact({ name, number }));
+  //   resetForm();
+  // };
 
-  const handleContactDelete = id => {
-    setContacts(prevContacts => {
-      return [...prevContacts.filter(e => e.id !== id)];
-    });
-  };
+  // const handleContactDelete = id => {
+  //   dispatch(deleteContact(id));
+  // };
 
   useEffect(() => {
     localStor.save(LS_KEY, contacts);
@@ -53,13 +35,13 @@ const App = () => {
     <>
       <Box margin="30px auto" width="390px" as="section">
         <h1>Phonebook</h1>
-        <ContactForm handleSubmit={handleFormSubmit} />
+        <ContactForm />
       </Box>
 
       <Box margin="0 auto" width="390px" as="section">
         <h2>Contacts</h2>
         <ContactFilter />
-        <ContactList handleContactDelete={handleContactDelete} />
+        <ContactList />
       </Box>
     </>
   );

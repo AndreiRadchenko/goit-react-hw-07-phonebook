@@ -1,4 +1,7 @@
 import { createSlice, nanoid } from '@reduxjs/toolkit';
+import localStor from 'utils/storage';
+
+const LS_KEY = 'contacts_list';
 
 const initialContacts = [
   { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
@@ -7,14 +10,39 @@ const initialContacts = [
   { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
 ];
 
+const initContacts = initialContacts => {
+  const savedContacts = localStor.load(LS_KEY);
+  if (savedContacts) {
+    return [...savedContacts];
+  } else {
+    return [...initialContacts];
+  }
+};
+
 const contactsSlice = createSlice({
   name: 'contacts',
-  initialState: initialContacts,
+  initialState: initContacts(initialContacts),
   reducers: {
     addContact: {
-      reducer(state, action) {},
-      prepare({ name, number }) {},
+      reducer(state, action) {
+        state.push(action.payload);
+      },
+      prepare({ name, number }) {
+        return {
+          payload: {
+            id: nanoid(),
+            name,
+            number,
+          },
+        };
+      },
     },
-    deleteContact(state, action) {},
+    deleteContact(state, action) {
+      const index = state.findIndex(e => e.id === action.payload);
+      state.splice(index, 1);
+    },
   },
 });
+
+export const { addContact, deleteContact } = contactsSlice.actions;
+export const contactsReducer = contactsSlice.reducer;

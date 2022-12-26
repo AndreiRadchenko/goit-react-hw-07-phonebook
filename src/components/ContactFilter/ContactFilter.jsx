@@ -1,6 +1,6 @@
 import css from './ContactFilter.styled';
 import { useDispatch } from 'react-redux';
-import { setFilter } from '../../redux/actions';
+import { setFilter } from 'redux/filterSlice';
 
 const ContactFilter = () => {
   const dispatch = useDispatch();
