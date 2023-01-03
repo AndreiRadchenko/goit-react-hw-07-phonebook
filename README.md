@@ -1,4 +1,3 @@
-# React-redux
+# React-redux async operations
 
-reduxjs/toolkit, redux-persist (localStorage)
-
+reduxjs/toolkit, mockapi.io (backend), createAsyncThunk
