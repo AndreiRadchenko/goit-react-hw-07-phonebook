@@ -1,11 +1,10 @@
 import { Formik, ErrorMessage } from 'formik';
 import css from './ContactForm.styled';
-import PropTypes from 'prop-types';
 import * as Yup from 'yup';
 import { useSelector, useDispatch } from 'react-redux';
-import { getContacts } from 'redux/selectors';
+import { selectContacts } from 'redux/selectors';
 import { Notify } from 'notiflix';
-import { addContact } from 'redux/contactsSlice';
+import { addContactOperation } from 'redux/operations';
 
 const regExName = /^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$/;
 const regExNumber =
@@ -32,7 +31,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const ContactForm = () => {
-  const contacts = useSelector(getContacts);
+  const contacts = useSelector(selectContacts);
   const dispatch = useDispatch();
 
   const handleFormSubmit = ({ name, number }, { resetForm }) => {
@@ -40,7 +39,7 @@ const ContactForm = () => {
       Notify.warning(`${name} is already in contacts`);
       return;
     }
-    dispatch(addContact({ name, number }));
+    dispatch(addContactOperation({ name, number }));
     resetForm();
   };
 
@@ -75,10 +74,6 @@ const ContactForm = () => {
       </css.ContactForm>
     </Formik>
   );
-};
-
-ContactForm.propType = {
-  handleSubmit: PropTypes.func.isRequired,
 };
 
 export default ContactForm;
