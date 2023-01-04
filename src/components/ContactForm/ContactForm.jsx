@@ -2,9 +2,11 @@ import { Formik, ErrorMessage } from 'formik';
 import css from './ContactForm.styled';
 import * as Yup from 'yup';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectContacts } from 'redux/selectors';
+import { selectContacts, selectIsLoading } from 'redux/selectors';
 import { Notify } from 'notiflix';
 import { addContactOperation } from 'redux/operations';
+import { useState, useEffect } from 'react';
+import BeatLoader from 'react-spinners/BeatLoader';
 
 const regExName = /^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$/;
 const regExNumber =
@@ -32,16 +34,25 @@ const validationSchema = Yup.object().shape({
 
 const ContactForm = () => {
   const contacts = useSelector(selectContacts);
+  const isLoading = useSelector(selectIsLoading);
   const dispatch = useDispatch();
+  const [isLoaderVisible, setIsLoaderVisible] = useState(false);
 
   const handleFormSubmit = ({ name, number }, { resetForm }) => {
     if (contacts.find(e => e.name === name)) {
       Notify.warning(`${name} is already in contacts`);
       return;
     }
+    setIsLoaderVisible(true);
     dispatch(addContactOperation({ name, number }));
     resetForm();
   };
+
+  useEffect(() => {
+    if (!isLoading) {
+      setIsLoaderVisible(false);
+    }
+  }, [isLoading]);
 
   return (
     <Formik
@@ -70,7 +81,10 @@ const ContactForm = () => {
             />
           </css.InputWrap>
         </css.Label>
-        <css.Button type="submit">Add contact</css.Button>
+        <css.Button type="submit" disabled={isLoaderVisible}>
+          {!isLoaderVisible && 'Add contact'}
+          <BeatLoader color="#36d7b7" size={10} loading={isLoaderVisible} />
+        </css.Button>
       </css.ContactForm>
     </Formik>
   );

@@ -5,9 +5,10 @@ import { selectVisibleContacts } from 'redux/selectors';
 
 const ContactList = () => {
   const contacts = useSelector(selectVisibleContacts);
+  const reversedContacts = [...contacts].reverse();
   return (
     <css.List>
-      {contacts.map(({ id, name, number }) => {
+      {reversedContacts.map(({ id, name, number }) => {
         return <Contact key={id} id={id} name={name} number={number} />;
       })}
     </css.List>
