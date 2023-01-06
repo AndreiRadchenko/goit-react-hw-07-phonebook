@@ -4,26 +4,19 @@ import { useDispatch } from 'react-redux';
 import { deleteContactOperation } from 'redux/operations';
 import Highlighter from 'react-highlight-words';
 import { useSelector } from 'react-redux';
-import { selectFilter, selectIsLoading } from 'redux/selectors';
+import { selectFilter } from 'redux/selectors';
 import BeatLoader from 'react-spinners/BeatLoader';
-import { useState, useEffect } from 'react';
+import { useShowLoader } from 'hooks/useShowLoader';
 
 const Contact = ({ id, name, number }) => {
   const dispatch = useDispatch();
   const filter = useSelector(selectFilter);
-  const isLoading = useSelector(selectIsLoading);
-  const [isLoaderVisible, setIsLoaderVisible] = useState(false);
+  const { isLoaderVisible, showLoader } = useShowLoader();
 
   const handleClick = () => {
-    setIsLoaderVisible(true);
+    showLoader();
     dispatch(deleteContactOperation(id));
   };
-
-  useEffect(() => {
-    if (!isLoading) {
-      setIsLoaderVisible(false);
-    }
-  }, [isLoading]);
 
   return (
     <css.Item>
